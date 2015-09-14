@@ -22,10 +22,15 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/build/lib)
 
 
 # set up executable
-set(SOURCE_FILES src/main.cpp inc/catch.h inc/main.h)
+set(SOURCE_FILES inc/catch.h src/Player.cpp inc/Player.h src/GameState.cpp inc/GameState.h)
+set(MAIN_FILES src/main.cpp inc/main.h)
 set(TEST_SOURCES test/tests.cpp test/tests.h test/test_runner.cpp test/test_runner.h)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
-add_executable(clion_practice ${SOURCE_FILES})
+add_library(clion_lib ${SOURCE_FILES})
 add_executable(clion_tests ${TEST_SOURCES})
-target_link_libraries( clion_practice ${Boost_PROGRAM_OPTIONS_LIBRARY} )
+add_executable(clion_main ${MAIN_FILES})
 
+# set up linking
+target_link_libraries(clion_lib ${Boost_PROGRAM_OPTIONS_LIBRARY} )
+target_link_libraries(clion_tests clion_lib)
+target_link_libraries(clion_main clion_lib)
